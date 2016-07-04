@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Input Directory
-INPUT=$1
-
-# How many dirs to recurse into
-DEPTH=1
+TOC_FILE="toc.md"
 
 function add-file {
 
@@ -16,21 +12,41 @@ function add-file {
 
 }
 
-if [ -f "toc.md" ]; then
-	rm toc.md
-fi
+function add-dir {
 
-echo "# Table of Contents" > toc.tmp
-
-if [ -d "$INPUT" ]; then
-	
-	for f in $(find $INPUT -maxdepth $DEPTH -name '*.md')
+	for f in $(find $1 -maxdepth 1 -name '*.md')
 	do
 		add-file $f
 	done
-else
-	echo "Error: Not a valid File or Directory!"
-	echo "Usage: generate [ FILE | DIRECTORY ]"
+	
+	for dir in `find $1 -type d`
+	do
+		if [ -f "${dir}${TOC_FILE}" ]
+		then
+			add-file ${dir}${TOC_FILE}
+
+		elif [ ! "$dir" = "${1}" ]
+		then
+			echo "" >> toc.tmp
+			echo "## $dir" >> toc.tmp
+			add-dir $dir
+		fi
+	done
+
+
+}
+
+# Removes old TOC so it isn't included
+if [ -f "${TOC_FILE}" ]
+then
+	rm ${TOC_FILE}
 fi
 
-mv toc.tmp toc.md
+# Setup TOC File
+echo "# Table of Contents" > toc.tmp
+
+# Add current dir
+add-dir .
+
+# Move TOC File
+mv toc.tmp ${TOC_FILE}
