@@ -9,7 +9,6 @@ function add-file {
 
 	echo "" >> toc.tmp
 	echo "[${TITLE}](${FILE})" >> toc.tmp
-
 }
 
 function add-dir {
@@ -32,8 +31,6 @@ function add-dir {
 			add-dir $dir
 		fi
 	done
-
-
 }
 
 # Removes old TOC so it isn't included
@@ -45,8 +42,14 @@ fi
 # Setup TOC File
 echo "# Table of Contents" > toc.tmp
 
-# Add current dir
-add-dir .
+# Add supplied dir
+if [ -d $1 ]
+then
+	add-dir $1
+else
+	echo "Erro: Invalid input directory!"
+	echo "Usage: generate [ DIRECTORY ]"
+fi
 
 # Move TOC File
 mv toc.tmp ${TOC_FILE}
