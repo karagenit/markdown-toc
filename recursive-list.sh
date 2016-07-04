@@ -20,9 +20,9 @@ function add-dir {
 	
 	for dir in $(find $1 -type d -not -path '*/\.*')
 	do
-		if [ -f "${dir}${TOC_FILE}" ]
+		if [ -f "${dir}/${TOC_FILE}" ]
 		then
-			add-file ${dir}${TOC_FILE}
+			add-file ${dir}/${TOC_FILE}
 
 		elif [ ! "$dir" = "${1}" ]
 		then
