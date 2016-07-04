@@ -19,7 +19,7 @@ function add-dir {
 		add-file $f
 	done
 	
-	for dir in `find $1 -type d`
+	for dir in $(find $1 -type d -not -path '*/\.*')
 	do
 		if [ -f "${dir}${TOC_FILE}" ]
 		then
