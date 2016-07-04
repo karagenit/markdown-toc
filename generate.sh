@@ -43,11 +43,11 @@ fi
 echo "# Table of Contents" > toc.tmp
 
 # Add supplied dir
-if [ -d $1 ]
+if [ $1 ] && [ -d $1 ]
 then
 	add-dir $1
 else
-	echo "Erro: Invalid input directory!"
+	echo "Error: Invalid input directory!"
 	echo "Usage: generate [ DIRECTORY ]"
 fi
 
