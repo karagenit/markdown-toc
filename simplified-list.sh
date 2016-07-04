@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Input Directory
-INPUT=$1
-
-# How many dirs to recurse into
-DEPTH=1
-
 function add-file {
 
 	FILE=$1
@@ -16,21 +10,26 @@ function add-file {
 
 }
 
+# Checks if cmdln arg is a dir
+if [ -d "$1" ]; then
+	cd $1
+else
+	echo "Error: Not a valid File or Directory!"
+	echo "Usage: generate [ DIRECTORY ]"
+	exit
+fi
+
+# Removes old TOC file
 if [ -f "toc.md" ]; then
 	rm toc.md
 fi
 
+# Create new TOC file
 echo "# Table of Contents" > toc.tmp
 
-if [ -d "$INPUT" ]; then
-	
-	for f in $(find $INPUT -maxdepth $DEPTH -name '*.md')
-	do
-		add-file $f
-	done
-else
-	echo "Error: Not a valid File or Directory!"
-	echo "Usage: generate [ FILE | DIRECTORY ]"
-fi
+for f in $(find . -maxdepth 1 -name '*.md')
+do
+	add-file $f
+done
 
 mv toc.tmp toc.md

@@ -33,6 +33,16 @@ function add-dir {
 	done
 }
 
+# Script setup
+if [ -d "$1" ]
+then
+	cd $1
+else
+	echo "Error: Invalid input directory!"
+	echo "Usage: generate [ DIRECTORY ]"
+	exit
+fi
+
 # Removes old TOC so it isn't included
 if [ -f "${TOC_FILE}" ]
 then
@@ -42,14 +52,6 @@ fi
 # Setup TOC File
 echo "# Table of Contents" > toc.tmp
 
-# Add supplied dir
-if [ $1 ] && [ -d $1 ]
-then
-	add-dir $1
-else
-	echo "Error: Invalid input directory!"
-	echo "Usage: generate [ DIRECTORY ]"
-fi
+add-dir .
 
-# Move TOC File
 mv toc.tmp ${TOC_FILE}
