@@ -11,6 +11,16 @@ function add-file {
 	echo "[${TITLE}](${FILE})" >> toc.tmp
 }
 
+function add-head {
+
+	DIR=$1
+	TITLE=`echo $DIR | sed -E "s/([A-Za-z0-9._-]{1,}[\/])*//"`
+	TITLE=${TITLE^}
+
+	echo "" >> toc.tmp
+	echo "## $TITLE" >> toc.tmp
+}
+
 function add-dir {
 
 	for f in $(find $1 -maxdepth 1 -name '*.md')
@@ -26,8 +36,7 @@ function add-dir {
 
 		elif [ ! "$dir" = "${1}" ]
 		then
-			echo "" >> toc.tmp
-			echo "## $dir" >> toc.tmp
+			add-head $dir
 			add-dir $dir
 		fi
 	done
