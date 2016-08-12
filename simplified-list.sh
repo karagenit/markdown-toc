@@ -26,9 +26,7 @@ fi
 
 # File List & UI Setup
 list=`find . -maxdepth 1 -name '*.md'`
-echo $list
 total=`echo $list | wc -w`
-echo "Found $total"
 count=0
 
 
@@ -39,8 +37,7 @@ for f in $list
 do
 	add-file $f
 	((count++))
-	# echo -ne "Processing... $(((count * 100) / total))%\r"
-	echo "File $count : $f"
+	echo -ne "Processing... $(((count * 100) / total))%\r"
 done
 
 mv toc.tmp toc.md
