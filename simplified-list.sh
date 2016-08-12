@@ -24,12 +24,23 @@ if [ -f "toc.md" ]; then
 	rm toc.md
 fi
 
+# File List & UI Setup
+list=`find . -maxdepth 1 -name '*.md'`
+echo $list
+total=`echo $list | wc -w`
+echo "Found $total"
+count=0
+
+
 # Create new TOC file
 echo "# Table of Contents" > toc.tmp
 
-for f in $(find . -maxdepth 1 -name '*.md')
+for f in $list
 do
 	add-file $f
+	((count++))
+	# echo -ne "Processing... $(((count * 100) / total))%\r"
+	echo "File $count : $f"
 done
 
 mv toc.tmp toc.md
