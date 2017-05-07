@@ -38,6 +38,9 @@ function add-dir {
 			((count++))
 			echo -ne "Processing... $(((count * 100) / total))%\r"
 		done
+
+		# *sigh*
+		echo ""
 	
 		mv toc.tmp toc.md
 	fi
@@ -62,14 +65,17 @@ do
 		shift
 	elif [ -d "$1" ]
 	then
+		# heck
+		cd $1
+
 		if [ "$conf_recurse" == true ] 
 		then
 			# for each dir, add-dir
-			for dir in $(find $1 -type d -not -path '*/\.*')
+			for dir in $(find . -type d -not -path '*/\.*')
 			do
 				add-dir $dir
 			done
-		elif
+		else
 			# add-dir just $1
 			add-dir $1
 		fi
